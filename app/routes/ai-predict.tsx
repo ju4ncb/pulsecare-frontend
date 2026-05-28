@@ -2,7 +2,7 @@ import type { Route } from "./+types/ai-predict";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { requireAuth } from "../lib/session";
-import { predictRiskWithGet, predictRiskWithPost, type AiPredictResponse } from "../lib/ai-client";
+import { predictRiskWithGet, predictRiskWithPost, type AiPredictResponse, type AiPredictResponseMapped } from "../lib/ai-client";
 
 export function loader({ request }: Route.LoaderArgs) {
   return requireAuth(request);
@@ -31,15 +31,29 @@ function ProbabilityBar({ label, value }: { label: string; value: number }) {
 export default function AiPredict() {
   const [entryId, setEntryId] = useState("");
   const [result, setResult] = useState<AiPredictResponse | null>(null);
+  const [resultMapped, setResultMapped] = useState<AiPredictResponseMapped | null>(null);
+
+  const setDataAndMap = (data: AiPredictResponse) => {
+    setResult(data);
+    const labelsMap: Record<string, string> = {
+      "0": "Riesgo bajo",
+      "1": "Riesgo medio",
+      "2": "Riesgo alto",
+    };
+    setResultMapped({
+      predictedLabel: "" + data.predicted_label,
+      predictedLabelName: labelsMap[data.predicted_label ?? ""] ?? "Desconocida",
+    });
+  }
 
   const getMutation = useMutation<AiPredictResponse, Error, string>({
     mutationFn: predictRiskWithGet,
-    onSuccess: (data) => setResult(data),
+    onSuccess: (data) => setDataAndMap(data),
   });
 
   const postMutation = useMutation<AiPredictResponse, Error, string>({
     mutationFn: predictRiskWithPost,
-    onSuccess: (data) => setResult(data),
+    onSuccess: (data) => setDataAndMap(data),
   });
 
   const errorMessage = getMutation.error?.message || postMutation.error?.message || null;
@@ -99,13 +113,13 @@ export default function AiPredict() {
 
       <article className="rounded-3xl border border-white/10 bg-slate-900/70 p-6">
         <h2 className="text-xl font-semibold text-white">Resultado</h2>
-        {result ? (
+        {resultMapped ? (
           <div className="mt-5 space-y-5">
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Etiqueta</p>
-                <p className="mt-2 text-2xl font-semibold text-white">{result.predicted_label_name ?? "—"}</p>
-                <p className="mt-1 text-sm text-slate-400">Clase: {result.predicted_label ?? "—"}</p>
+                <p className="mt-2 text-2xl font-semibold text-white">{resultMapped.predictedLabelName ?? "—"}</p>
+                <p className="mt-1 text-sm text-slate-400">Clase: {resultMapped.predictedLabel ?? "—"}</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                 <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Entrada</p>

@@ -46,6 +46,11 @@ export type AiPredictResponse = {
   [key: string]: unknown;
 };
 
+export type AiPredictResponseMapped = {
+  predictedLabel?: string;
+  predictedLabelName?: string;
+};
+
 export type AiValidateResponse = {
   sample_count?: number;
   accuracy?: number;
