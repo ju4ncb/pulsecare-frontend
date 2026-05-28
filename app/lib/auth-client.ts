@@ -33,10 +33,10 @@ function setCookie(name: string, value: string) {
 export async function loginUser(values: LoginFormValues) {
   const response = await fetchJson<LoginResponse>("/auth/login", {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       email: values.email.trim(),
       password: values.password,
-    }),
+    },
   });
 
   setCookie("pulsecare_token", response.access_token);
@@ -58,10 +58,10 @@ export async function loginUser(values: LoginFormValues) {
 export async function registerUser(values: RegisterFormValues) {
   await fetchJson<unknown>("/auth/register", {
     method: "POST",
-    body: JSON.stringify({
+    body: {
       email: values.email.trim(),
       password: values.password,
-    }),
+    },
   });
 }
 
