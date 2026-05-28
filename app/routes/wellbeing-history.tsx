@@ -23,6 +23,8 @@ type HistoryEntry = {
   mood?: number;
   sleep_hours?: number;
   sleep?: number;
+  energy_fatigue?: number;
+  academic_load?: number;
 };
 
 export default function WellbeingHistory() {
@@ -48,6 +50,8 @@ export default function WellbeingHistory() {
       const createdAt = createdAtRaw ? new Date(createdAtRaw) : null;
       const mood = item.mood_score ?? item.mood;
       const sleep = item.sleep_hours ?? item.sleep;
+      const energy_fatigue = item.energy_fatigue ?? item.energy_fatigue;
+      const academic_load = item.academic_load ?? item.academic_load;
 
       return {
         id,
@@ -55,6 +59,8 @@ export default function WellbeingHistory() {
         createdAtLabel: createdAt ? createdAt.toLocaleString() : "-",
         mood,
         sleep,
+        energy_fatigue,
+        academic_load,
       };
     });
 
@@ -246,6 +252,8 @@ export default function WellbeingHistory() {
               <th className="px-4 py-3 font-medium">Fecha</th>
               <th className="px-4 py-3 font-medium">Ánimo</th>
               <th className="px-4 py-3 font-medium">Sueño</th>
+              <th className="px-4 py-3 font-medium">Fatiga</th>
+              <th className="px-4 py-3 font-medium">Carga académica</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/10 text-slate-200">
@@ -256,11 +264,13 @@ export default function WellbeingHistory() {
                   <td className="px-4 py-3">{item.createdAtLabel}</td>
                   <td className="px-4 py-3">{item.mood ?? "-"}</td>
                   <td className="px-4 py-3">{item.sleep ?? "-"}</td>
+                  <td className="px-4 py-3">{item.energy_fatigue ?? "-"}</td>
+                  <td className="px-4 py-3">{item.academic_load ?? "-"}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td className="px-4 py-3" colSpan={4}>
+                <td className="px-4 py-3" colSpan={6}>
                   No hay entradas de bienestar disponibles.
                 </td>
               </tr>

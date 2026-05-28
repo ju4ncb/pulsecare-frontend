@@ -14,7 +14,7 @@ const fields = [
   { name: "mood_score", label: "Estado de ánimo", type: "number", min: 1, max: 5, step: 1, hint: "1 a 5" },
   { name: "sleep_hours", label: "Horas de sueño", type: "number", min: 0, max: 24, step: 0.1, hint: "0 a 24" },
   { name: "academic_load", label: "Carga académica", type: "number", min: 1, max: 5, step: 1, hint: "1 a 5" },
-  { name: "energy_fatigue", label: "Energía o fatiga", type: "number", min: 1, max: 5, step: 1, hint: "1 a 5" },
+  { name: "energy_fatigue", label: "Fatiga de Energía", type: "number", min: 1, max: 5, step: 1, hint: "1 a 5" },
 ] as const;
 
 const wellbeingEntrySchema = z.object({
