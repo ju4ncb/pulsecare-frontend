@@ -17,6 +17,6 @@ export type WellbeingEntryResponse = {
 export async function createWellbeingEntry(values: WellbeingEntryFormValues) {
   return fetchAuthedJson<WellbeingEntryResponse>("/api/wellbeing/entries", {
     method: "POST",
-    body: JSON.stringify(values),
+    body: values,
   });
 }

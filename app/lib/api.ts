@@ -2,6 +2,14 @@ export const API_BASE_URL = "https://pulsecare-backend-25uo.onrender.com";
 
 type JsonValue = Record<string, unknown>;
 
+type JsonRequestInit = Omit<RequestInit, "body"> & {
+  body?: BodyInit | JsonValue | null;
+};
+
+function isPlainObject(value: unknown): value is JsonValue {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export function getCookie(name: string): string | null {
   if (typeof document === "undefined") {
     return null;
@@ -19,13 +27,17 @@ export function getCookie(name: string): string | null {
   return decodeURIComponent(cookie.slice(name.length + 1));
 }
 
-export async function fetchJson<TResponse>(path: string, init?: RequestInit): Promise<TResponse> {
+export async function fetchJson<TResponse>(path: string, init?: JsonRequestInit): Promise<TResponse> {
+  const body = init?.body;
+  const shouldStringifyBody = isPlainObject(body);
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
     headers: {
-      "Content-Type": "application/json",
+      ...(shouldStringifyBody ? { "Content-Type": "application/json" } : {}),
       ...(init?.headers ?? {}),
     },
-    ...init,
+    body: shouldStringifyBody ? JSON.stringify(body) : body,
   });
 
   const contentType = response.headers.get("content-type") || "";
@@ -43,7 +55,7 @@ export async function fetchJson<TResponse>(path: string, init?: RequestInit): Pr
   return data as TResponse;
 }
 
-export async function fetchAuthedJson<TResponse>(path: string, init?: RequestInit): Promise<TResponse> {
+export async function fetchAuthedJson<TResponse>(path: string, init?: JsonRequestInit): Promise<TResponse> {
   const token = getCookie("pulsecare_token");
 
   return fetchJson<TResponse>(path, {
