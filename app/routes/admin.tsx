@@ -1,6 +1,7 @@
 import type { Route } from "./+types/admin";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router";
 import { requireAdmin } from "../lib/session";
 import {
   getModelArtifact,
@@ -104,6 +105,15 @@ export default function Admin() {
       <p className="mt-2 text-sm text-slate-300">
         Ruta reservada para rol administrador, alineada con los endpoints de entrenamiento del backend.
       </p>
+
+      <div className="mt-4 flex flex-wrap gap-3 text-sm">
+        <Link to="/admin/validate" className="rounded-2xl border border-white/10 px-4 py-2 text-slate-100 hover:bg-white/5">
+          Validación del modelo
+        </Link>
+        <Link to="/ai/predict" className="rounded-2xl border border-white/10 px-4 py-2 text-slate-100 hover:bg-white/5">
+          Ir a predicción IA
+        </Link>
+      </div>
 
       <div className={`mt-4 inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ${statusTone}`}>
         Estado actual: {statusLabel}

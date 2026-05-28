@@ -96,6 +96,9 @@ export default function Dashboard() {
             <Link to="/wellbeing/history" className="rounded-2xl border border-white/10 px-4 py-4 text-slate-200 hover:bg-white/5">
               Ver historial y tendencias
             </Link>
+            <Link to="/ai/predict" className="rounded-2xl border border-white/10 px-4 py-4 text-slate-200 hover:bg-white/5">
+              Predecir riesgo de un registro
+            </Link>
             <Link to="/profile" className="rounded-2xl border border-white/10 px-4 py-4 text-slate-200 hover:bg-white/5">
               Revisar perfil
             </Link>

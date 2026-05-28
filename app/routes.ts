@@ -8,10 +8,12 @@ export default [
 	]),
 	layout("routes/app-layout.tsx", [
 		route("dashboard", "routes/dashboard.tsx"),
+		route("ai/predict", "routes/ai-predict.tsx"),
 		route("wellbeing/entry", "routes/wellbeing-entry.tsx"),
 		route("wellbeing/history", "routes/wellbeing-history.tsx"),
 		route("profile", "routes/profile.tsx"),
 		route("admin", "routes/admin.tsx"),
+		route("admin/validate", "routes/ai-validate.tsx"),
 		route("logout", "routes/logout.tsx"),
 	]),
 ] satisfies RouteConfig;

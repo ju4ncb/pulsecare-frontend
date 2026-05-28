@@ -39,6 +39,24 @@ export type AiArtifactResponse =
       data: AiArtifactJsonResponse;
     };
 
+export type AiPredictResponse = {
+  predicted_label?: number;
+  predicted_label_name?: string;
+  probabilities?: Record<string, number>;
+  [key: string]: unknown;
+};
+
+export type AiValidateResponse = {
+  sample_count?: number;
+  accuracy?: number;
+  precision?: number;
+  recall?: number;
+  f1?: number;
+  confusion_matrix?: number[][];
+  classification_report?: Record<string, Record<string, number>>;
+  [key: string]: unknown;
+};
+
 export async function trainModelSync() {
   return fetchAuthedJson<AiTrainSyncResponse>("/api/ai/train", {
     method: "POST",
@@ -101,4 +119,18 @@ export async function getModelArtifact(): Promise<AiArtifactResponse> {
   const blob = await response.blob();
   const filename = extractFilename(response.headers.get("content-disposition"));
   return { kind: "file", filename, blob };
+}
+
+export async function predictRiskWithGet(entryId: string) {
+  return fetchAuthedJson<AiPredictResponse>(`/api/ai/predict/${encodeURIComponent(entryId.trim())}`);
+}
+
+export async function predictRiskWithPost(entryId: string) {
+  return fetchAuthedJson<AiPredictResponse>(`/api/ai/predict/${encodeURIComponent(entryId.trim())}`, {
+    method: "POST",
+  });
+}
+
+export async function validateModel() {
+  return fetchAuthedJson<AiValidateResponse>("/api/ai/validate");
 }

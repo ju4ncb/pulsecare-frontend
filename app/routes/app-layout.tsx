@@ -50,6 +50,9 @@ export default function AppLayout() {
               <NavLink to="/wellbeing/history" className={navLinkClass}>
                 Historial
               </NavLink>
+              <NavLink to="/ai/predict" className={navLinkClass}>
+                Predicción IA
+              </NavLink>
               <NavLink to="/profile" className={navLinkClass}>
                 Perfil
               </NavLink>
