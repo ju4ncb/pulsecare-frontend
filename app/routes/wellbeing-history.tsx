@@ -17,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
 type HistoryEntry = {
   id?: number;
   entry_id?: number;
-  created_at?: string;
+  recorded_at?: string;
   timestamp?: string;
   mood_score?: number;
   mood?: number;
@@ -44,7 +44,7 @@ export default function WellbeingHistory() {
   const filteredEntries = useMemo(() => {
     const normalized = entries.map((item) => {
       const id = item.id ?? item.entry_id;
-      const createdAtRaw = item.created_at ?? item.timestamp;
+      const createdAtRaw = item.recorded_at ?? item.timestamp;
       const createdAt = createdAtRaw ? new Date(createdAtRaw) : null;
       const mood = item.mood_score ?? item.mood;
       const sleep = item.sleep_hours ?? item.sleep;
